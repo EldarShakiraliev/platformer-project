@@ -6,21 +6,20 @@
 class Level {
 public:
     Level();
-    ~Level();
 
-    void reset_level_index();
-    void load_level(int offset);
-    void unload_level();
+    static void reset_level_index();
+    static void load_level(int offset);
+    static void unload_level();
 
-    [[nodiscard]] bool is_inside_level(int row, int column) const;
-    [[nodiscard]] bool is_colliding(Vector2 pos, char look_for) const;
-    char& get_collider(Vector2 pos, char look_for);
+    [[nodiscard]] static bool is_inside_level(int row, int column) ;
+    [[nodiscard]] static bool is_colliding(Vector2 pos, char look_for) ;
+    [[nodiscard]] static char& get_collider(Vector2 pos, char look_for) ;
 
-    [[nodiscard]] char& get_level_cell(size_t row, size_t column) const;
-    void set_level_cell(size_t row, size_t column, char chr);
+    [[nodiscard]] static char& get_level_cell(size_t row, size_t column) ;
+    static void set_level_cell(size_t row, size_t column, char chr) ;
 
 private:
-    char* current_level_data;
+     static char* current_level_data;
 };
 
 #endif // LEVEL_H
