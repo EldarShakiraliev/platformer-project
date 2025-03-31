@@ -1,5 +1,7 @@
 #include "level.h"
 #include "raylib.h"
+#include "player.h"
+#include "enemy.h"
 
 char* Level::current_level_data = nullptr;
 
@@ -32,8 +34,8 @@ void Level::load_level(int offset) {
     }
 
     current_level = {rows, columns, current_level_data};
-    spawn_player();
-    spawn_enemies();
+    Player::spawn_player();
+    Enemies::spawn_enemies();
     derive_graphics_metrics_from_loaded_level();
     timer = MAX_LEVEL_TIME;
 }

@@ -2,6 +2,8 @@
 #define GRAPHICS_H
 
 #include "globals.h"
+#include "level.h"
+#include "player.h"
 
 void draw_text(Text &text) {
     // Measure the text, center it to the required position, and draw it
@@ -85,9 +87,9 @@ void draw_game_overlay() {
     DrawTextEx(menu_font, std::to_string(timer / 60).c_str(), timer_position, ICON_SIZE, 2.0f, WHITE);
 
     // Score
-    Vector2 score_dimensions = MeasureTextEx(menu_font, std::to_string(get_total_player_score()).c_str(), ICON_SIZE, 2.0f);
+    Vector2 score_dimensions = MeasureTextEx(menu_font, std::to_string(Player::get_total_player_score()).c_str(), ICON_SIZE, 2.0f);
     Vector2 score_position = {GetRenderWidth() - score_dimensions.x - ICON_SIZE, slight_vertical_offset};
-    DrawTextEx(menu_font, std::to_string(get_total_player_score()).c_str(), score_position, ICON_SIZE, 2.0f, WHITE);
+    DrawTextEx(menu_font, std::to_string(Player::get_total_player_score()).c_str(), score_position, ICON_SIZE, 2.0f, WHITE);
     draw_sprite(coin_sprite, {GetRenderWidth() - ICON_SIZE, slight_vertical_offset}, ICON_SIZE);
 }
 
@@ -106,7 +108,7 @@ void draw_level() {
             };
 
             // Draw the level itself
-            char cell = get_level_cell(row, column);
+            char cell = Level::get_level_cell(row, column);
             switch (cell) {
                 case WALL:
                     draw_image(wall_image, pos, cell_size);

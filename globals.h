@@ -126,15 +126,6 @@ inline int player_level_scores[LEVEL_COUNT];
 inline const int MAX_PLAYER_LIVES = 3;
 inline int player_lives = MAX_PLAYER_LIVES;
 
-/* Enemy data */
-
-struct Enemy {
-    Vector2 pos;
-    bool is_looking_right;
-};
-
-inline std::vector<Enemy> enemies;
-
 /* Graphic Metrics */
 
 // UI
@@ -319,41 +310,6 @@ void create_victory_menu_background();
 void animate_victory_menu_background();
 void draw_victory_menu_background();
 void draw_victory_menu();
-
-// LEVEL_H
-
-bool is_inside_level(int row, int column);
-bool is_colliding(Vector2 pos, char look_for = '#');
-char& get_collider(Vector2 pos, char look_for);
-
-void reset_level_index();
-void load_level(int offset = 0);
-void unload_level();
-
-char& get_level_cell(size_t row, size_t column);
-void set_level_cell(size_t row, size_t column, char chr);
-
-// PLAYER_H
-
-void reset_player_stats();
-void increment_player_score();
-int get_total_player_score();
-
-void spawn_player();
-void kill_player();
-
-void move_player_horizontally(float delta);
-void update_player();
-void update_player_gravity();
-
-// ENEMY_H
-
-void spawn_enemies();
-
-void update_enemies();
-
-bool is_colliding_with_enemies(Vector2 pos);
-void remove_colliding_enemy(Vector2 pos);
 
 // ASSETS_H
 

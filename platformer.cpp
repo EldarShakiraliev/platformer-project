@@ -16,27 +16,27 @@ void update_game() {
             if (IsKeyPressed(KEY_ENTER)) {
                 SetExitKey(0);
                 game_state = GAME_STATE;
-                load_level(0);
+                Level::load_level(0);
             }
             break;
 
         case GAME_STATE:
             if (IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D)) {
-                move_player_horizontally(PLAYER_MOVEMENT_SPEED);
+                Player::move_player_horizontally(PLAYER_MOVEMENT_SPEED);
             }
 
             if (IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A)) {
-                move_player_horizontally(-PLAYER_MOVEMENT_SPEED);
+                Player::move_player_horizontally(-PLAYER_MOVEMENT_SPEED);
             }
 
             // Calculating collisions to decide whether the player is allowed to jump
-            is_player_on_ground = is_colliding({player_pos.x, player_pos.y + 0.1f}, WALL);
+            is_player_on_ground = Level::is_colliding({player_pos.x, player_pos.y + 0.1f}, WALL);
             if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W) || IsKeyDown(KEY_SPACE)) && is_player_on_ground) {
                 player_y_velocity = -JUMP_STRENGTH;
             }
 
-            update_player();
-            update_enemies();
+            Player::update_player();
+            Enemies::update_enemies();
 
             if (IsKeyPressed(KEY_ESCAPE)) {
                 game_state = PAUSED_STATE;
@@ -50,11 +50,11 @@ void update_game() {
             break;
 
         case DEATH_STATE:
-            update_player_gravity();
+            Player::update_player_gravity();
 
             if (IsKeyPressed(KEY_ENTER)) {
                 if (player_lives > 0) {
-                    load_level(0);
+                    Level::load_level(0);
                     game_state = GAME_STATE;
                 }
                 else {
@@ -66,17 +66,17 @@ void update_game() {
 
         case GAME_OVER_STATE:
             if (IsKeyPressed(KEY_ENTER)) {
-                reset_level_index();
-                reset_player_stats();
+                Level::reset_level_index();
+                Player::reset_player_stats();
                 game_state = GAME_STATE;
-                load_level(0);
+                Level::load_level(0);
             }
             break;
 
         case VICTORY_STATE:
             if (IsKeyPressed(KEY_ENTER) || IsKeyPressed(KEY_ESCAPE)) {
-                reset_level_index();
-                reset_player_stats();
+                Level::reset_level_index();
+                Player::reset_player_stats();
                 game_state = MENU_STATE;
                 SetExitKey(KEY_ESCAPE);
             }
@@ -128,7 +128,7 @@ int main() {
     load_fonts();
     load_images();
     load_sounds();
-    load_level();
+    Level::load_level(0);
 
     while (!WindowShouldClose()) {
         BeginDrawing();
@@ -139,7 +139,7 @@ int main() {
         EndDrawing();
     }
 
-    unload_level();
+    Level::unload_level();
     unload_sounds();
     unload_images();
     unload_fonts();
