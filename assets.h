@@ -6,37 +6,51 @@
 
 #include <string>
 #include <cassert>
+#include <iostream>
+#include <stdexcept>
 
 void load_fonts() {
     menu_font = LoadFontEx("data/fonts/ARCADE_N.ttf", 256, nullptr, 128);
+    if (menu_font.texture.id == 0) {
+        std::cerr << "Error: Failed to load font 'data/fonts/ARCADE_N.ttf'" << std::endl;
+        exit(EXIT_FAILURE);
+    }
 }
 
 void unload_fonts() {
     UnloadFont(menu_font);
 }
 
+Texture2D not_error_load_texture(const std::string& file_path) {
+    Texture2D texture = LoadTexture(file_path.c_str());
+    if (texture.id == 0) {
+        std::cerr << "Error: Failed to load texture '" << file_path << "'" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    return texture;
+}
 void load_images() {
-    wall_image                   = LoadTexture("data/images/wall.png");
-    wall_dark_image              = LoadTexture("data/images/wall_dark.png");
-    spike_image                  = LoadTexture("data/images/spikes.png");
-    exit_image                   = LoadTexture("data/images/exit.png");
+    wall_image                   = not_error_load_texture("data/images/wall.png");
+    wall_dark_image              = not_error_load_texture("data/images/wall_dark.png");
+    spike_image                  = not_error_load_texture("data/images/spikes.png");
+    exit_image                   = not_error_load_texture("data/images/exit.png");
 
     coin_sprite                  = load_sprite("data/images/coin/coin", ".png", 3, true, 18);
-    heart_image                  = LoadTexture("data/images/heart.png");
+    heart_image                  = not_error_load_texture("data/images/heart.png");
 
-    player_stand_forward_image   = LoadTexture("data/images/player_stand_forward.png");
-    player_stand_backwards_image = LoadTexture("data/images/player_stand_backwards.png");
-    player_jump_forward_image    = LoadTexture("data/images/player_jump_forward.png");
-    player_jump_backwards_image  = LoadTexture("data/images/player_jump_backwards.png");
-    player_dead_image            = LoadTexture("data/images/player_dead.png");
+    player_stand_forward_image   = not_error_load_texture("data/images/player_stand_forward.png");
+    player_stand_backwards_image = not_error_load_texture("data/images/player_stand_backwards.png");
+    player_jump_forward_image    = not_error_load_texture("data/images/player_jump_forward.png");
+    player_jump_backwards_image  = not_error_load_texture("data/images/player_jump_backwards.png");
+    player_dead_image            = not_error_load_texture("data/images/player_dead.png");
     player_walk_forward_sprite   = load_sprite("data/images/player_walk_forward/player", ".png", 3, true, 15);
     player_walk_backwards_sprite = load_sprite("data/images/player_walk_backwards/player", ".png", 3, true, 15);
 
     enemy_walk                   = load_sprite("data/images/enemy_walk/enemy", ".png", 2, true, 15);
 
-    background                   = LoadTexture("data/images/background/background.png");
-    middleground                 = LoadTexture("data/images/background/middleground.png");
-    foreground                   = LoadTexture("data/images/background/foreground.png");
+    background                   = not_error_load_texture("data/images/background/background.png");
+    middleground                 = not_error_load_texture("data/images/background/middleground.png");
+    foreground                   = not_error_load_texture("data/images/background/foreground.png");
 }
 
 void unload_images() {
@@ -136,13 +150,21 @@ void draw_sprite(sprite &sprite, Vector2 pos, float width, float height) {
     sprite.prev_game_frame = game_frame;
 }
 
+Sound not_error_load_sound(const std::string& file_path) {
+    Sound sound = LoadSound(file_path.c_str());
+    if (sound.frameCount == 0) {
+        std::cerr << "Error: Failed to load sound '" << file_path << "'" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    return sound;
+}
 void load_sounds() {
     InitAudioDevice();
-    coin_sound         = LoadSound("data/sounds/coin.wav");
-    exit_sound         = LoadSound("data/sounds/exit.wav");
-    kill_enemy_sound   = LoadSound("data/sounds/kill_enemy.wav");
-    player_death_sound = LoadSound("data/sounds/player_death.wav");
-    game_over_sound    = LoadSound("data/sounds/game_over.wav");
+    coin_sound         = not_error_load_sound("data/sounds/coin.wav");
+    exit_sound         = not_error_load_sound("data/sounds/exit.wav");
+    kill_enemy_sound   = not_error_load_sound("data/sounds/kill_enemy.wav");
+    player_death_sound = not_error_load_sound("data/sounds/player_death.wav");
+    game_over_sound    = not_error_load_sound("data/sounds/game_over.wav");
 }
 
 void unload_sounds() {

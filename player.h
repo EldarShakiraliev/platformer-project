@@ -7,19 +7,12 @@ class Player {
 public:
     Player();
     static void reset_player_stats();
-
     static void increment_player_score();
-
     static int get_total_player_score();
-
     static void spawn_player();
-
     static void kill_player();
-
     static void move_player_horizontally(float delta);
-
     static void update_player_gravity();
-
     static void update_player();
 private:
 };
