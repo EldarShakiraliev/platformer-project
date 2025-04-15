@@ -2,11 +2,25 @@
 #define LEVEL_H
 
 #include "globals.h"
+#include <vector>
+
+
+struct level {
+    size_t rows = 0, columns = 0;
+    std::vector <char> data;
+};
+
+inline int level_index = 0;
+inline int LEVEL_COUNT = 0;
+
+inline std::vector<level> LEVELS;
+inline level current_level;
 
 class Level {
 public:
     Level();
 
+    static std::vector<level> load_from_file(std::string path);
     static void reset_level_index();
     static void load_level(int offset);
     static void unload_level();
@@ -19,7 +33,7 @@ public:
     static void set_level_cell(size_t row, size_t column, char chr) ;
 
 private:
-     static char* current_level_data;
+     static std::vector <char> current_level_data;
 };
 
 #endif // LEVEL_H

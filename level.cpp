@@ -2,13 +2,61 @@
 #include "raylib.h"
 #include "player.h"
 #include "enemy.h"
+#include <fstream>
+#include <iostream>
 
-char* Level::current_level_data = nullptr;
+std::vector <char> Level::current_level_data;
 
 Level::Level() {
-    current_level_data = nullptr;
+    current_level_data = std::vector <char> ();
 }
 
+std::vector<level> Level::load_from_file(std::string path) {
+    std::ifstream file(path);
+    std::string line;
+    std::vector<level> levels;
+    while(std::getline(file, line)) {
+        if (line[0] == ';') {
+            continue;
+        }
+        int vertical_bar = 0;
+        std::vector<char> level_data;
+        for (int i = 0; i < line.size(); ++i) {
+            if (line[i] == '|') {
+                vertical_bar++;
+                continue;
+            }
+            if ('0' <= line[i] && line[i] <= '9') {
+                int end = i+1;
+                while('0' <= line[end] && line[end] <= '9') {
+                    end++;
+                }
+                std::string substr = line.substr(i, end - i);
+                   int num = std::stoi(substr);
+                char ch = line[end];
+                for (int j = 0; j < num; j++) {
+                    level_data.push_back(ch);
+                }
+                i = end;
+                continue;
+            }
+            if (line[i] == '@' || line[i] == '=' || line[i] == '#' || line[i] == '-' || line[i] == '*' || line[i] == '^' || line[i] == '&' || line[i] == 'E') {
+                level_data.push_back(line [i]);
+            } else {
+                throw std::runtime_error("The level data is corrupted.\n");
+            }
+        }
+        level lvl = {
+                static_cast<size_t>(vertical_bar + 1),
+                level_data.size() / (vertical_bar + 1),
+                level_data
+        };
+        levels.push_back(lvl);
+    }
+    LEVEL_COUNT = levels.size();
+    player_level_scores = std::vector <int> (levels.size());
+    return levels;
+}
 void Level::reset_level_index() {
     level_index = 0;
 }
@@ -25,7 +73,7 @@ void Level::load_level(int offset) {
 
     size_t rows = LEVELS[level_index].rows;
     size_t columns = LEVELS[level_index].columns;
-    current_level_data = new char[rows * columns];
+    current_level_data = std::vector <char>(rows * columns);
 
     for (size_t row = 0; row < rows; row++) {
         for (size_t column = 0; column < columns; column++) {
@@ -41,7 +89,7 @@ void Level::load_level(int offset) {
 }
 
 void Level::unload_level() {
-    delete[] current_level_data;
+     current_level_data.clear();
 }
 
 bool Level::is_inside_level(int row, int column) {

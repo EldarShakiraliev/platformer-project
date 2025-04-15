@@ -126,6 +126,7 @@ int main() {
     SetTargetFPS(60);
     HideCursor();
 
+    LEVELS = Level::load_from_file("data/levels.rll");
     load_fonts();
     load_images();
     load_sounds();
