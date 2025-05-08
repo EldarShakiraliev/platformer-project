@@ -8,6 +8,9 @@ public:
     Player();
     static void reset_player_stats();
     static void increment_player_score();
+    static void cherry_picked();
+    static void diamond_picked();
+    static void shoe_picked();
     static int get_total_player_score();
     static void spawn_player();
     static void kill_player();

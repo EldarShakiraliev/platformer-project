@@ -34,6 +34,9 @@ void load_images() {
     wall_dark_image              = not_error_load_texture("data/images/wall_dark.png");
     spike_image                  = not_error_load_texture("data/images/spikes.png");
     exit_image                   = not_error_load_texture("data/images/exit.png");
+    cherry_image                 = not_error_load_texture("data/images/cherry.png");
+    diamond_image                = not_error_load_texture("data/images/diamond.png");
+    shoe_image                   = not_error_load_texture("data/images/shoe.png");
 
     coin_sprite                  = load_sprite("data/images/coin/coin", ".png", 3, true, 18);
     heart_image                  = not_error_load_texture("data/images/heart.png");
@@ -58,6 +61,9 @@ void unload_images() {
     UnloadTexture(wall_dark_image);
     UnloadTexture(spike_image);
     UnloadTexture(exit_image);
+    UnloadTexture(cherry_image);
+    UnloadTexture(diamond_image);
+    UnloadTexture(shoe_image);
 
     unload_sprite(coin_sprite);
     UnloadTexture(heart_image);
@@ -161,6 +167,9 @@ Sound not_error_load_sound(const std::string& file_path) {
 void load_sounds() {
     InitAudioDevice();
     coin_sound         = not_error_load_sound("data/sounds/coin.wav");
+    cherry_sound       = not_error_load_sound("data/sounds/cherry_sound.wav");
+    diamond_sound      = not_error_load_sound("data/sounds/diamond_sound.wav");
+    shoe_sound         = not_error_load_sound("data/sounds/shoe_sound.wav");
     exit_sound         = not_error_load_sound("data/sounds/exit.wav");
     kill_enemy_sound   = not_error_load_sound("data/sounds/kill_enemy.wav");
     player_death_sound = not_error_load_sound("data/sounds/player_death.wav");
@@ -169,6 +178,9 @@ void load_sounds() {
 
 void unload_sounds() {
     UnloadSound(coin_sound);
+    UnloadSound(cherry_sound);
+    UnloadSound(diamond_sound);
+    UnloadSound(shoe_sound);
     UnloadSound(exit_sound);
     UnloadSound(kill_enemy_sound);
     UnloadSound(player_death_sound);

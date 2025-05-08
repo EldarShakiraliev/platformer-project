@@ -40,7 +40,7 @@ std::vector<level> Level::load_from_file(std::string path) {
                 i = end;
                 continue;
             }
-            if (line[i] == '@' || line[i] == '=' || line[i] == '#' || line[i] == '-' || line[i] == '*' || line[i] == '^' || line[i] == '&' || line[i] == 'E') {
+            if (line[i] == '@' || line[i] == '=' || line[i] == '#' || line[i] == '-' || line[i] == '*' || line[i] == '^' || line[i] == '&' || line[i] == 'E' || line[i] == '+' || line[i] == 'D' || line[i] == 'S') {
                 level_data.push_back(line [i]);
             } else {
                 throw std::runtime_error("The level data is corrupted.\n");

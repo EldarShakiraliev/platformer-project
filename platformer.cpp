@@ -33,7 +33,7 @@ void update_game() {
             // Calculating collisions to decide whether the player is allowed to jump
             is_player_on_ground = Level::is_colliding({player_pos.x, player_pos.y + 0.1f}, WALL);
             if ((IsKeyDown(KEY_UP) || IsKeyDown(KEY_W) || IsKeyDown(KEY_SPACE)) && is_player_on_ground) {
-                player_y_velocity = -JUMP_STRENGTH;
+                player_y_velocity = -(is_jump_boost_active ? BOOSTED_JUMP_STRENGTH : JUMP_STRENGTH);
             }
 
             Player::update_player();

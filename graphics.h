@@ -10,8 +10,8 @@ void draw_text(Text &text) {
     Vector2 dimensions = MeasureTextEx(*text.font, text.str.c_str(), text.size * screen_scale, text.spacing);
 
     Vector2 pos = {
-        (screen_size.x * text.position.x) - (0.5f * dimensions.x),
-        (screen_size.y * text.position.y) - (0.5f * dimensions.y)
+            (screen_size.x * text.position.x) - (0.5f * dimensions.x),
+            (screen_size.y * text.position.y) - (0.5f * dimensions.y)
     };
 
     DrawTextEx(*text.font, text.str.c_str(), pos, dimensions.y, text.spacing, text.color);
@@ -19,7 +19,7 @@ void draw_text(Text &text) {
 
 void derive_graphics_metrics_from_loaded_level() {
     // Level and UI setup
-    screen_size.x  = static_cast<float>(GetScreenWidth());
+    screen_size.x = static_cast<float>(GetScreenWidth());
     screen_size.y = static_cast<float>(GetScreenHeight());
 
     cell_size = screen_size.y / static_cast<float>(LEVELS[level_index].rows);
@@ -30,8 +30,7 @@ void derive_graphics_metrics_from_loaded_level() {
 
     if (screen_size.x > screen_size.y) {
         background_size = {larger_screen_side, larger_screen_side / 16 * 10};
-    }
-    else {
+    } else {
         background_size = {larger_screen_side / 10 * 16, larger_screen_side};
     }
 
@@ -40,33 +39,37 @@ void derive_graphics_metrics_from_loaded_level() {
 
 void draw_parallax_background() {
     // First uses the player's position
-    float initial_offset      = -(player_pos.x * PARALLAX_PLAYER_SCROLLING_SPEED + game_frame * PARALLAX_IDLE_SCROLLING_SPEED);
+    float initial_offset = -(player_pos.x * PARALLAX_PLAYER_SCROLLING_SPEED +
+                             game_frame * PARALLAX_IDLE_SCROLLING_SPEED);
 
     // Calculate offsets for different layers
-    float background_offset   = initial_offset;
+    float background_offset = initial_offset;
     float middleground_offset = background_offset * PARALLAX_LAYERED_SPEED_DIFFERENCE;
-    float foreground_offset   = middleground_offset * PARALLAX_LAYERED_SPEED_DIFFERENCE;
+    float foreground_offset = middleground_offset * PARALLAX_LAYERED_SPEED_DIFFERENCE;
 
     // Wrap offsets to create a loop effect
-    background_offset   = fmod(background_offset, 1.0f);
+    background_offset = fmod(background_offset, 1.0f);
     middleground_offset = fmod(middleground_offset, 1.0f);
-    foreground_offset   = fmod(foreground_offset, 1.0f);
+    foreground_offset = fmod(foreground_offset, 1.0f);
 
     // Scale to background size
-    background_offset   *= background_size.x;
+    background_offset *= background_size.x;
     middleground_offset *= background_size.x;
-    foreground_offset   *= background_size.x;
+    foreground_offset *= background_size.x;
 
     // Each layer is drawn twice, side by side, the first starting from its offset, and the other from its offset + background_size
     // This ensures a seamless scrolling effect, because when one copy moves out of sight, the second jumps into its place.
-    draw_image(background,   {background_offset + background_size.x, background_y_offset},   background_size.x, background_size.y);
-    draw_image(background,   {background_offset,                     background_y_offset},   background_size.x, background_size.y);
+    draw_image(background, {background_offset + background_size.x, background_y_offset}, background_size.x,
+               background_size.y);
+    draw_image(background, {background_offset, background_y_offset}, background_size.x, background_size.y);
 
-    draw_image(middleground, {middleground_offset + background_size.x, background_y_offset}, background_size.x, background_size.y);
-    draw_image(middleground, {middleground_offset,                     background_y_offset}, background_size.x, background_size.y);
+    draw_image(middleground, {middleground_offset + background_size.x, background_y_offset}, background_size.x,
+               background_size.y);
+    draw_image(middleground, {middleground_offset, background_y_offset}, background_size.x, background_size.y);
 
-    draw_image(foreground,   {foreground_offset + background_size.x, background_y_offset},   background_size.x, background_size.y);
-    draw_image(foreground,   {foreground_offset,                     background_y_offset},   background_size.x, background_size.y);
+    draw_image(foreground, {foreground_offset + background_size.x, background_y_offset}, background_size.x,
+               background_size.y);
+    draw_image(foreground, {foreground_offset, background_y_offset}, background_size.x, background_size.y);
 }
 
 void draw_game_overlay() {
@@ -87,9 +90,11 @@ void draw_game_overlay() {
     DrawTextEx(menu_font, std::to_string(timer / 60).c_str(), timer_position, ICON_SIZE, 2.0f, WHITE);
 
     // Score
-    Vector2 score_dimensions = MeasureTextEx(menu_font, std::to_string(Player::get_total_player_score()).c_str(), ICON_SIZE, 2.0f);
+    Vector2 score_dimensions = MeasureTextEx(menu_font, std::to_string(Player::get_total_player_score()).c_str(),
+                                             ICON_SIZE, 2.0f);
     Vector2 score_position = {GetRenderWidth() - score_dimensions.x - ICON_SIZE, slight_vertical_offset};
-    DrawTextEx(menu_font, std::to_string(Player::get_total_player_score()).c_str(), score_position, ICON_SIZE, 2.0f, WHITE);
+    DrawTextEx(menu_font, std::to_string(Player::get_total_player_score()).c_str(), score_position, ICON_SIZE, 2.0f,
+               WHITE);
     draw_sprite(coin_sprite, {GetRenderWidth() - ICON_SIZE, slight_vertical_offset}, ICON_SIZE);
 }
 
@@ -118,6 +123,15 @@ void draw_level() {
                     break;
                 case SPIKE:
                     draw_image(spike_image, pos, cell_size);
+                    break;
+                case CHERRY:
+                    draw_image(cherry_image, pos, cell_size);
+                    break;
+                case DIAMOND:
+                    draw_image(diamond_image, pos, cell_size);
+                    break;
+                case SHOE:
+                    draw_image(shoe_image, pos, cell_size);
                     break;
                 case COIN:
                     draw_sprite(coin_sprite, pos, cell_size);
@@ -148,23 +162,22 @@ void draw_player() {
     if (game_state == GAME_STATE) {
         if (!is_player_on_ground) {
             draw_image((is_looking_forward ? player_jump_forward_image : player_jump_backwards_image), pos, cell_size);
-        }
-        else if (is_moving) {
-            draw_sprite((is_looking_forward ? player_walk_forward_sprite : player_walk_backwards_sprite), pos, cell_size);
+        } else if (is_moving) {
+            draw_sprite((is_looking_forward ? player_walk_forward_sprite : player_walk_backwards_sprite), pos,
+                        cell_size);
             is_moving = false;
+        } else {
+            draw_image((is_looking_forward ? player_stand_forward_image : player_stand_backwards_image), pos,
+                       cell_size);
         }
-        else {
-            draw_image((is_looking_forward ? player_stand_forward_image : player_stand_backwards_image), pos, cell_size);
-        }
-    }
-    else {
+    } else {
         draw_image(player_dead_image, pos, cell_size);
     }
 }
 
 void draw_enemies() {
     // Go over all enemies and draw them, once again accounting to the player's movement and horizontal shift
-    for (auto &enemy : enemies) {
+    for (auto &enemy: enemies) {
         horizontal_shift = (screen_size.x - cell_size) / 2;
 
         Vector2 pos = {
@@ -201,9 +214,9 @@ void draw_game_over_menu() {
 }
 
 void create_victory_menu_background() {
-    for (auto &ball : victory_balls) {
-        ball.x  = rand_up_to(screen_size.x);
-        ball.y  = rand_up_to(screen_size.y);
+    for (auto &ball: victory_balls) {
+        ball.x = rand_up_to(screen_size.x);
+        ball.y = rand_up_to(screen_size.y);
         ball.dx = rand_from_to(-VICTORY_BALL_MAX_SPEED, VICTORY_BALL_MAX_SPEED);
         ball.dx *= screen_scale;
         if (abs(ball.dx) < 0E-1) ball.dx = 1.0f;
@@ -224,7 +237,7 @@ void create_victory_menu_background() {
 }
 
 void animate_victory_menu_background() {
-    for (auto &ball : victory_balls) {
+    for (auto &ball: victory_balls) {
         ball.x += ball.dx;
         if (ball.x - ball.radius < 0 ||
             ball.x + ball.radius >= screen_size.x) {
@@ -239,16 +252,16 @@ void animate_victory_menu_background() {
 }
 
 void draw_victory_menu_background() {
-    for (auto &ball : victory_balls) {
-        DrawCircleV({ ball.x, ball.y }, ball.radius, VICTORY_BALL_COLOR);
+    for (auto &ball: victory_balls) {
+        DrawCircleV({ball.x, ball.y}, ball.radius, VICTORY_BALL_COLOR);
     }
 }
 
 void draw_victory_menu() {
     DrawRectangle(
-        0, 0,
-        static_cast<int>(screen_size.x), static_cast<int>(screen_size.y),
-        { 0, 0, 0, VICTORY_BALL_TRAIL_TRANSPARENCY }
+            0, 0,
+            static_cast<int>(screen_size.x), static_cast<int>(screen_size.y),
+            {0, 0, 0, VICTORY_BALL_TRAIL_TRANSPARENCY}
     );
 
     animate_victory_menu_background();

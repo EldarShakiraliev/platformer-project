@@ -28,6 +28,24 @@ void Player::increment_player_score() {
     player_level_scores[level_index]++;
 }
 
+void Player::cherry_picked() {
+    PlaySound(cherry_sound);
+    if (player_lives < 3) {
+        player_lives++;
+    }
+}
+
+void Player::shoe_picked() {
+    PlaySound(shoe_sound);
+    is_jump_boost_active = true;
+    jump_boost_timer = JUMP_BOOST_DURATION;
+}
+
+void Player::diamond_picked() {
+    PlaySound(diamond_sound);
+    player_level_scores[level_index] = player_level_scores[level_index] + 5;
+}
+
 int Player::get_total_player_score() {
     int sum = 0;
     for (int i = 0; i < LEVEL_COUNT; i++) {
@@ -92,6 +110,28 @@ void Player::update_player() {
     if (Level::is_colliding(player_pos, COIN)) {
         Level::get_collider(player_pos, COIN) = AIR; // Removes the coin
         increment_player_score();
+    }
+
+    if (Level::is_colliding(player_pos, CHERRY)) {
+        Level::get_collider(player_pos, CHERRY) = AIR;
+        cherry_picked();
+    }
+
+    if (Level::is_colliding(player_pos, DIAMOND)) {
+        Level::get_collider(player_pos, DIAMOND) = AIR;
+        diamond_picked();
+    }
+
+    if (Level::is_colliding(player_pos, SHOE)) {
+        Level::get_collider(player_pos, SHOE) = AIR;
+        shoe_picked();
+    }
+
+    if (is_jump_boost_active) {
+        jump_boost_timer--;
+        if (jump_boost_timer <= 0) {
+            is_jump_boost_active = false;
+        }
     }
 
     if (Level::is_colliding(player_pos, EXIT)) {

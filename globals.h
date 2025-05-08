@@ -17,7 +17,10 @@ inline const char WALL      = '#',
                   PLAYER    = '@',
                   ENEMY     = '&',
                   COIN      = '*',
-                  EXIT      = 'E';
+                  EXIT      = 'E',
+                  CHERRY    = '+',
+                  SHOE      = 'S',
+                  DIAMOND   = 'D';
 
 /* Levels */
 
@@ -27,6 +30,7 @@ inline const char WALL      = '#',
 inline const int MAX_LEVEL_TIME = 50 * 60;
 inline int timer = MAX_LEVEL_TIME;
 inline int time_to_coin_counter = 0;
+inline const int JUMP_BOOST_DURATION = 600;
 
 /* Physics constants */
 
@@ -36,6 +40,9 @@ inline const float CEILING_BOUNCE_OFF    = 0.05f;
 inline const float ENEMY_MOVEMENT_SPEED  = 0.07f;
 inline const float BOUNCE_OFF_ENEMY      = 0.1f;
 inline const float GRAVITY_FORCE         = 0.01f;
+inline const float BOOSTED_JUMP_STRENGTH = 0.4f;
+inline bool is_jump_boost_active = false;
+inline int  jump_boost_timer = 0;
 
 /* Player data */
 
@@ -153,6 +160,9 @@ inline Texture2D wall_image;
 inline Texture2D wall_dark_image;
 inline Texture2D spike_image;
 inline Texture2D exit_image;
+inline Texture2D cherry_image;
+inline Texture2D diamond_image;
+inline Texture2D shoe_image;
 inline sprite coin_sprite;
 
 // UI Elements
@@ -178,6 +188,9 @@ inline Texture2D foreground;
 /* Sounds */
 
 inline Sound coin_sound;
+inline Sound cherry_sound;
+inline Sound diamond_sound;
+inline Sound shoe_sound;
 inline Sound exit_sound;
 inline Sound player_death_sound;
 inline Sound kill_enemy_sound;
