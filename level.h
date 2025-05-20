@@ -4,6 +4,18 @@
 #include "globals.h"
 #include <vector>
 
+inline const char
+        WALL      = '#',
+        WALL_DARK = '=',
+        AIR       = '-',
+        SPIKE     = '^',
+        PLAYER    = '@',
+        ENEMY     = '&',
+        COIN      = '*',
+        EXIT      = 'E',
+        CHERRY    = '+',
+        SHOE      = 'S',
+        DIAMOND   = 'D';
 
 struct level {
     size_t rows = 0, columns = 0;
@@ -12,9 +24,6 @@ struct level {
 
 inline int level_index = 0;
 inline int LEVEL_COUNT = 0;
-
-inline std::vector<level> LEVELS;
-inline level current_level;
 
 class Level {
 public:
@@ -32,8 +41,10 @@ public:
     [[nodiscard]] static char& get_level_cell(size_t row, size_t column) ;
     static void set_level_cell(size_t row, size_t column, char chr) ;
 
+    static std::vector<level> LEVELS;
+    static level current_level;
 private:
-     static std::vector <char> current_level_data;
+    static std::vector <char> current_level_data;
 };
 
 #endif // LEVEL_H

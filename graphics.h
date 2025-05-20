@@ -22,7 +22,7 @@ void derive_graphics_metrics_from_loaded_level() {
     screen_size.x = static_cast<float>(GetScreenWidth());
     screen_size.y = static_cast<float>(GetScreenHeight());
 
-    cell_size = screen_size.y / static_cast<float>(LEVELS[level_index].rows);
+    cell_size = screen_size.y / static_cast<float>(Level::LEVELS[level_index].rows);
     screen_scale = std::min(screen_size.x, screen_size.y) / SCREEN_SCALE_DIVISOR;
 
     // Parallax background setup
@@ -102,8 +102,8 @@ void draw_level() {
     // Move the x-axis' center to the middle of the screen
     horizontal_shift = (screen_size.x - cell_size) / 2;
 
-    for (size_t row = 0; row < current_level.rows; ++row) {
-        for (size_t column = 0; column < current_level.columns; ++column) {
+    for (size_t row = 0; row < Level::current_level.rows; ++row) {
+        for (size_t column = 0; column < Level::current_level.columns; ++column) {
 
             Vector2 pos = {
                     // Move the level to the left as the player advances to the right,
@@ -146,7 +146,7 @@ void draw_level() {
     }
 
     draw_player();
-    draw_enemies();
+    Enemies::draw_enemies();
 }
 
 void draw_player() {
@@ -172,20 +172,6 @@ void draw_player() {
         }
     } else {
         draw_image(player_dead_image, pos, cell_size);
-    }
-}
-
-void draw_enemies() {
-    // Go over all enemies and draw them, once again accounting to the player's movement and horizontal shift
-    for (auto &enemy: enemies) {
-        horizontal_shift = (screen_size.x - cell_size) / 2;
-
-        Vector2 pos = {
-                (enemy.pos.x - player_pos.x) * cell_size + horizontal_shift,
-                enemy.pos.y * cell_size
-        };
-
-        draw_sprite(enemy_walk, pos, cell_size);
     }
 }
 

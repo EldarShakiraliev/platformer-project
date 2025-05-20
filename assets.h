@@ -12,8 +12,7 @@
 void load_fonts() {
     menu_font = LoadFontEx("data/fonts/ARCADE_N.ttf", 256, nullptr, 128);
     if (menu_font.texture.id == 0) {
-        std::cerr << "Error: Failed to load font 'data/fonts/ARCADE_N.ttf'" << std::endl;
-        exit(EXIT_FAILURE);
+        throw std::runtime_error("Error: Failed to load font\n");
     }
 }
 
@@ -24,8 +23,7 @@ void unload_fonts() {
 Texture2D not_error_load_texture(const std::string& file_path) {
     Texture2D texture = LoadTexture(file_path.c_str());
     if (texture.id == 0) {
-        std::cerr << "Error: Failed to load texture '" << file_path << "'" << std::endl;
-        exit(EXIT_FAILURE);
+        throw std::runtime_error("Error: Failed to load texture\n");
     }
     return texture;
 }
@@ -159,8 +157,7 @@ void draw_sprite(sprite &sprite, Vector2 pos, float width, float height) {
 Sound not_error_load_sound(const std::string& file_path) {
     Sound sound = LoadSound(file_path.c_str());
     if (sound.frameCount == 0) {
-        std::cerr << "Error: Failed to load sound '" << file_path << "'" << std::endl;
-        exit(EXIT_FAILURE);
+        throw std::runtime_error("Error: Failed to load sound\n");
     }
     return sound;
 }

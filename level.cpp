@@ -5,10 +5,12 @@
 #include <fstream>
 #include <iostream>
 
-std::vector <char> Level::current_level_data;
+std::vector<char> Level::current_level_data;
+std::vector<level> Level::LEVELS;
+level Level::current_level;
 
 Level::Level() {
-    current_level_data = std::vector <char> ();
+    current_level_data = std::vector<char> ();
 }
 
 std::vector<level> Level::load_from_file(std::string path) {

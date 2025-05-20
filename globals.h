@@ -8,24 +8,6 @@
 #include <cstddef>
 #include <cmath>
 
-/* Game Elements */
-
-inline const char WALL      = '#',
-                  WALL_DARK = '=',
-                  AIR       = '-',
-                  SPIKE     = '^',
-                  PLAYER    = '@',
-                  ENEMY     = '&',
-                  COIN      = '*',
-                  EXIT      = 'E',
-                  CHERRY    = '+',
-                  SHOE      = 'S',
-                  DIAMOND   = 'D';
-
-/* Levels */
-
-
-
 /* Timer-mechanic related */
 inline const int MAX_LEVEL_TIME = 50 * 60;
 inline int timer = MAX_LEVEL_TIME;
